@@ -132,7 +132,7 @@ namespace Physics {
 		if(bodyContactNum == MAX_CONCURRENT_BODYCONTACTS) return;
 
 		const b2Manifold* manifold = c->GetManifold();
-		if (manifold->pointCount == 0) return;
+		if (manifold->pointCount == 0 && t != BodyContact::End) return;
 
 		Collider* colliderA = (Collider*) c->GetFixtureA()->GetUserData();
 		Collider* colliderB = (Collider*) c->GetFixtureB()->GetUserData();
