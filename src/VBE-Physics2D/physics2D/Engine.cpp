@@ -67,9 +67,7 @@ namespace Physics {
 		while(accumulated >= timestep) {
 			world->Step(timestep, velocityIterations, positionIterations, particleIterations);
 			accumulated -= timestep;
-			float a = Clock::getSeconds();
 			processContacts();
-			Log::message() << " CONTACTS: " <<  (Clock::getSeconds()-a)*1000 << Log::Flush;
 		}
 	}
 
