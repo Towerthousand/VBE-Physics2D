@@ -93,6 +93,15 @@ namespace Physics {
 		world->QueryAABB(&queryCallback, b2aabb);
 	}
 
+	vec2f Engine::getGravity() {
+		return Utils::B2Dv2ToGLMv2(world->GetGravity());
+	}
+
+	void Engine::setGravity(vec2f g) {
+		VBE_ASSERT(world != nullptr, "Trying to add collider to an not-init physics simulation");
+		world->SetGravity(Utils::GLMv2ToB2Dv2(g));
+	}
+
 	b2Body* Engine::createBody() {
 		VBE_ASSERT(world != nullptr, "Trying to add collider to an not-init physics simulation");
 		b2BodyDef b;

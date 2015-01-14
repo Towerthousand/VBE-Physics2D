@@ -33,9 +33,10 @@ namespace Physics {
 			static void draw(const DebugDrawer* drawer);
 			static void drawGrid(const DebugDrawer* drawer, vec2f min, vec2f max, float step, vec4f color);
 			static void queryAABB(QueryCallback* callback, AABB aabb);
+			static vec2f getGravity();
+			static void setGravity(vec2f g);
 			static void close();
 
-			static b2World* world;
 		private:
 			class EngineQueryCallback : public b2QueryCallback {
 				public:
@@ -78,6 +79,7 @@ namespace Physics {
 			static void registerContact(b2ParticleSystem* particleSystem, int32 indexA, int32 indexB);
 			static void processContacts();
 
+			static b2World* world;
 			static float timestep;
 			static int velocityIterations;
 			static int positionIterations;
