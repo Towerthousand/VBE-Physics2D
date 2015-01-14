@@ -20,6 +20,14 @@ namespace Physics {
 		return colliders.size();
 	}
 
+	bool Body::getIgnoreAutoCollisions() const {
+		return ignoreAutoCollisions;
+	}
+
+	void Body::setIgnoreAutoCollisions(bool ignore) {
+		ignoreAutoCollisions = ignore;
+	}
+
 	Collider* Body::getCollider(unsigned int index) const {
 		VBE_ASSERT((int)index < getNumColliders(), "Collider index out of range");
 		return colliders[index];

@@ -15,6 +15,8 @@ namespace Physics {
 			virtual ~Body() override;
 			int getColliderIndex(const Collider* col) const;
 			int getNumColliders() const;
+			bool getIgnoreAutoCollisions() const;
+			void setIgnoreAutoCollisions(bool ignore);
 
 		protected:
 			virtual void update(float deltaTime) override {(void) deltaTime;}
@@ -32,6 +34,7 @@ namespace Physics {
 
 		private:
 			friend class Engine;
+			bool ignoreAutoCollisions = true;
 
 			std::vector<Collider*> colliders;
 	};

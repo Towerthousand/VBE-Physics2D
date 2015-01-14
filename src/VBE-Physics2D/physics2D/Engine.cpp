@@ -141,7 +141,6 @@ namespace Physics {
 		if(bodyContactNum == MAX_CONCURRENT_BODYCONTACTS) return;
 
 		const b2Manifold* manifold = c->GetManifold();
-		if (manifold->pointCount == 0 && t != BodyContact::End) return;
 
 		Collider* colliderA = (Collider*) c->GetFixtureA()->GetUserData();
 		Collider* colliderB = (Collider*) c->GetFixtureB()->GetUserData();
@@ -152,6 +151,13 @@ namespace Physics {
 		BodyContact* cb = &bodyContactBuffer[bodyContactNum];
 		cb->a = colliderA;
 		cb->b = colliderB;
+		if(manifold->pointCount == 0 && t != BodyContact::End && !cb->a->isSensor() && !cb->b->isSensor())
+			return;
+		if(cb->a->getBody() == cb->b->getBody() && cb->a->getBody()->getIgnoreAutoCollisions()) {
+			if(t == BodyContact::Stay)
+				c->SetEnabled(false);
+			return;
+		}
 		cb->normal = Utils::B2Dv2ToGLMv2(worldManifold.normal);
 		cb->pointCount = manifold->pointCount;
 		cb->type = t;
