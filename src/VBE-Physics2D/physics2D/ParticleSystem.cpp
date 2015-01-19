@@ -3,7 +3,7 @@
 
 namespace Physics {
 
-	ParticleSystem::ParticleSystem() : sys(nullptr) {
+	ParticleSystem::ParticleSystem() {
 		sys = Engine::createParticleSystem(this);
 	}
 
@@ -45,6 +45,10 @@ namespace Physics {
 		def2.position = Utils::GLMv2ToB2Dv2(def.position);
 		def2.velocity = Utils::GLMv2ToB2Dv2(def.velocity);
 		return sys->CreateParticle(def2);
+	}
+
+	ParticleHandle ParticleSystem::getParticleHandleFromIndex(int index) {
+		return ParticleHandle(sys, index);
 	}
 
 	void ParticleSystem::destroyParticle(int index, bool callDestructionListener) {

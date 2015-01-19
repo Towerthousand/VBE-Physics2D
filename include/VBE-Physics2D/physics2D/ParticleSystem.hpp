@@ -30,14 +30,26 @@ namespace Physics {
 	};
 
 	struct ParticleDef {
-			ParticleDef() : flags(0), position(0.0f), velocity(0.0f), color(0), lifetime(0.0f), userData(nullptr) {}
+			ParticleDef() {}
 
-			unsigned int flags;
-			vec2f position;
-			vec2f velocity;
-			vec4uc color;
-			float lifetime;
-			void* userData;
+			unsigned int flags = 0;
+			vec2f position = vec2f(0.0f);
+			vec2f velocity = vec2f(0.0f);
+			vec4uc color = vec4uc(0);
+			float lifetime = 0.0f;
+			void* userData = nullptr;
+	};
+
+	struct ParticleHandle {
+			~ParticleHandle() {delete handle;}
+			int getIndex() const {return handle->GetIndex();}
+		private:
+			ParticleHandle(b2ParticleSystem* sys, int index) {
+				VBE_ASSERT(index >= 0 && index < sys->GetParticleCount(), "Invalid particle index when requesting handle");
+				handle = sys->GetParticleHandleFromIndex(index);
+			}
+			const b2ParticleHandle* handle = nullptr;
+			friend class ParticleSystem;
 	};
 
 	class ParticleContact;
@@ -49,6 +61,7 @@ namespace Physics {
 			virtual ~ParticleSystem() override;
 
 			int createParticle(const ParticleDef& def);
+			ParticleHandle getParticleHandleFromIndex(int index);
 			void destroyParticle(int index) {destroyParticle(index, false);}
 			void destroyParticle(int index, bool callDestructionListener);
 			void destroyOldestParticle(int index, bool callDestructionListener);
@@ -143,14 +156,14 @@ namespace Physics {
 					bool ShouldQueryParticleSystem(const b2ParticleSystem* particleSystem) override { (void) particleSystem; return true;}
 					void reset(QueryCallback* newCallback, const ParticleSystem* system);
 
-					QueryCallback* callback;
-					ParticleSystem* callbackSystem;
+					QueryCallback* callback = nullptr;
+					ParticleSystem* callbackSystem = nullptr;
 			};
 
 			friend class Engine;
 
 			mutable SystemQueryCallback queryCallback;
-			b2ParticleSystem* sys;
+			b2ParticleSystem* sys = nullptr;
 	};
 
 }
